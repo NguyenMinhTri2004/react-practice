@@ -3,6 +3,7 @@ import './index.css';
 import App from './App.js';
 import { Provider } from 'react-redux';
 import store from './store';
+import './styles/main.scss';
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>

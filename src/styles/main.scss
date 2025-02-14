@@ -1,0 +1,50 @@
+@import './preflight.scss';
+@import './scroll.scss';
+
+@mixin flex($align-item, $justify-content) {
+  display: flex;
+  align-items: $align-item;
+  justify-content: $justify-content;
+}
+
+// @font-face {c
+//   font-family: 'Chalkboard';
+//   src: url('/fonts/chalkboard.ttf');
+// }
+
+// @font-face {
+//   font-family: 'Chalkboard Bold';
+//   src: url('/fonts/chalkboard-bold.ttf');
+// }
+
+// @font-face {
+//   font-family: 'Inter Bold';
+//   src: url('/fonts/inter/Inter-Bold.ttf');
+// }
+
+// @font-face {
+//   font-family: 'Comfortaa';
+//   src: url('/fonts/comfortaa/Comfortaa-Bold.ttf');
+// }
+
+// @font-face {
+//   font-family: 'Inter SemiBold';
+//   src: url('/fonts/inter/Inter-SemiBold.ttf');
+// }
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Comfortaa', sans-serif !important;
+  scroll-behavior: smooth;
+  //   @apply text-base;
+  // font-size: 16px !important;
+  height: 100%;
+}
+
+div::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
