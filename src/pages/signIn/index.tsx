@@ -1,5 +1,7 @@
+import SignIn from '@/modules/SignIn';
+
 const SignInPage = () => {
-  return <div>index</div>;
+  return <SignIn />;
 };
 
 export default SignInPage;

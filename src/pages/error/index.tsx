@@ -1,5 +1,6 @@
+import NotFound from '@/modules/NotFound';
 const ErrorPage = () => {
-  return <div>index</div>;
+  return <NotFound />;
 };
 
 export default ErrorPage;

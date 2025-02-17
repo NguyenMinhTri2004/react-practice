@@ -1,12 +1,17 @@
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App.js';
-import { Provider } from 'react-redux';
-import store from './store';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './styles/main.scss';
+const theme = createTheme();
 
-createRoot(document.getElementById('root')!).render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
+  </React.StrictMode>,
 );

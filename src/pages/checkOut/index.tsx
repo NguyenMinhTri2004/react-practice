@@ -1,5 +1,7 @@
+import Checkout from '@/modules/CheckOut';
+
 const CheckOutPage = () => {
-  return <div>index</div>;
+  return <Checkout />;
 };
 
 export default CheckOutPage;
