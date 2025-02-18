@@ -11,6 +11,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '@/store/hooks';
+import { Badge } from '@mui/material'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -51,6 +53,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header: React.FC = () => {
+  const cartItems = useAppSelector((state) => state.cart.items);
+
+  const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
     <AppBar position="static" color="default" elevation={1}>
       <Container maxWidth="xl">
@@ -70,7 +76,7 @@ const Header: React.FC = () => {
             noWrap
             style={{ marginLeft: 16 }}
           >
-            <Link to={'/productList/man'}>Men</Link>
+            <Link to={'/productList/men'}>Men</Link>
           </Typography>
           <Typography
             sx={{ cursor: 'pointer' }}
@@ -79,7 +85,7 @@ const Header: React.FC = () => {
             noWrap
             style={{ marginLeft: 16 }}
           >
-            <Link to={'/productList/woman'}>Women</Link>
+            <Link to={'/productList/women'}>Women</Link>
           </Typography>
           <div style={{ flexGrow: 1 }} />
           <Search>
@@ -94,9 +100,25 @@ const Header: React.FC = () => {
           <IconButton color="inherit">
             <AccountCircleIcon />
           </IconButton>
+          <Link to = "/cart" >
           <IconButton color="inherit">
             <ShoppingCartIcon />
+            {totalQuantity > 0 && (
+                <Badge
+                  badgeContent={totalQuantity}
+                  color="error"
+                  sx={{
+                    position: 'absolute',
+                    top: 7,
+                    right: 0,
+                    transform: 'translate(50%, -50%)',
+                    fontSize: 12,
+                    borderRadius: '50%',
+                  }}
+                />
+              )}
           </IconButton>
+          </Link>
         </Toolbar>
       </Container>
     </AppBar>

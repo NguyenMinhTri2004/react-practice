@@ -1,17 +1,15 @@
 import { Paper } from '@mui/material';
 import CartItem from './CartItem';
 
-interface Product {
+interface CartItemProps {
+  id: number;
   image: string;
-  title: string;
+  name: string;
   price: number;
   quantity: number;
-  shipping: string;
-  subtotal: number;
 }
-
 interface ProductListProps {
-  products: Product[];
+  products: CartItemProps[];
 }
 
 const CartItemList: React.FC<ProductListProps> = ({ products }) => {
@@ -19,13 +17,7 @@ const CartItemList: React.FC<ProductListProps> = ({ products }) => {
     <Paper sx={{ p: 2, mb: 2 }}>
       {products.map((product, index) => (
         <CartItem
-          key={index}
-          image={product.image}
-          title={product.title}
-          price={product.price}
-          quantity={product.quantity}
-          shipping={product.shipping}
-          subtotal={product.subtotal}
+            product={product}
         />
       ))}
     </Paper>
