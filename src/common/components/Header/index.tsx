@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -9,10 +9,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Container } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Container, Badge, Button, Stack } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppSelector } from '@/store/hooks';
-import { Badge } from '@mui/material'
+import { useTranslation } from 'react-i18next';
+import { useCurrency } from '@/context/CurrencyContext';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -53,40 +54,58 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header: React.FC = () => {
+  const { currency, toggleCurrency } = useCurrency();
   const cartItems = useAppSelector((state) => state.cart.items);
+  const { i18n } = useTranslation();
+  const { t }: { t: (key: string) => string } = useTranslation();
+  const location = useLocation();
+
+  const changeLanguage = (lng: string) => {
+    i18n
+      .changeLanguage(lng)
+      .then(() => console.log(`Switched to ${lng}`))
+      .catch((err) => console.error('Error switching language:', err));
+  };
 
   const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  const navLinks = [
+    { path: '/', label: t('menu.shop') },
+    { path: '/productList/men', label: t('menu.men') },
+    { path: '/productList/women', label: t('menu.women') },
+    { path: '/quoteform', label: t('menu.quoteForm') },
+  ];
+
+  const [selectedPath, setSelectedPath] = useState<string | null>(location.pathname);
+
+  useEffect(() => {
+    if (!selectedPath) {
+      setSelectedPath('/');
+    }
+  }, [selectedPath]);
+
   return (
-    <AppBar position="static" color="default" elevation={1}>
+    <AppBar position="fixed" color="default" elevation={1}>
       <Container maxWidth="xl">
         <Toolbar sx={{ cursor: 'pointer' }}>
-          {/* <img
-            src="https://storage.googleapis.com/a1aa/image/CGKh8Z-RFE4OPoYuZCkZ19fz_5mNIu6ZvQESiUvRgxQ.jpg"
-            alt="Euphoria logo with the text 'Euphoria Keep it classy.'"
-            style={{ height: 40, marginRight: 16 }}
-          /> */}
-          <Typography sx={{ cursor: 'pointer' }} variant="body1" color="textPrimary" noWrap>
-            <Link to={'/'}>Shop</Link>
-          </Typography>
-          <Typography
-            sx={{ cursor: 'pointer' }}
-            variant="body1"
-            color="textSecondary"
-            noWrap
-            style={{ marginLeft: 16 }}
-          >
-            <Link to={'/productList/men'}>Men</Link>
-          </Typography>
-          <Typography
-            sx={{ cursor: 'pointer' }}
-            variant="body1"
-            color="textSecondary"
-            noWrap
-            style={{ marginLeft: 16 }}
-          >
-            <Link to={'/productList/women'}>Women</Link>
-          </Typography>
+          {navLinks.map((link) => (
+            <Typography
+              key={link.path}
+              sx={{
+                cursor: 'pointer',
+                marginLeft: 2,
+                fontWeight: selectedPath === link.path ? 'bold' : 'normal',
+              }}
+              variant="body1"
+              color="textSecondary"
+              noWrap
+              onClick={() => setSelectedPath(link.path)}
+            >
+              <Link to={link.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                {link.label}
+              </Link>
+            </Typography>
+          ))}
           <div style={{ flexGrow: 1 }} />
           <Search>
             <SearchIconWrapper>
@@ -100,10 +119,10 @@ const Header: React.FC = () => {
           <IconButton color="inherit">
             <AccountCircleIcon />
           </IconButton>
-          <Link to = "/cart" >
-          <IconButton color="inherit">
-            <ShoppingCartIcon />
-            {totalQuantity > 0 && (
+          <Link to="/cart">
+            <IconButton color="inherit">
+              <ShoppingCartIcon />
+              {totalQuantity > 0 && (
                 <Badge
                   badgeContent={totalQuantity}
                   color="error"
@@ -117,10 +136,23 @@ const Header: React.FC = () => {
                   }}
                 />
               )}
-          </IconButton>
+            </IconButton>
           </Link>
         </Toolbar>
       </Container>
+      <div>
+        <Stack direction="row" spacing={2} justifyContent="center" sx={{ my: 2 }}>
+          <Button variant="contained" color="primary" onClick={() => changeLanguage('en')}>
+            English
+          </Button>
+          <Button variant="contained" color="secondary" onClick={() => changeLanguage('vi')}>
+            Tiếng Việt
+          </Button>
+          <Button variant="contained" color="primary" onClick={toggleCurrency}>
+            Chuyển sang {currency === 'USD' ? 'VND' : 'USD'}
+          </Button>
+        </Stack>
+      </div>
     </AppBar>
   );
 };

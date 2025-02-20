@@ -1,15 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface Order {
+export type OrderStatus = 'pending' | 'shipped' | 'delivered';
+
+export type Order = {
   id: string;
   items: { id: string; name: string; quantity: number }[];
   total: number;
-  status: 'pending' | 'shipped' | 'delivered';
-}
+  status: OrderStatus;
+};
 
-export interface OrderState {
+export type OrderState = {
   orders: Order[];
-}
+};
 
 const initialState: OrderState = {
   orders: [],
@@ -22,7 +24,8 @@ const orderSlice = createSlice({
     placeOrder: (state, action: PayloadAction<Order>) => {
       state.orders.push(action.payload);
     },
-    updateOrderStatus: (state, action: PayloadAction<{ id: string; status: Order['status'] }>) => {
+
+    updateOrderStatus: (state, action: PayloadAction<{ id: string; status: OrderStatus }>) => {
       const order = state.orders.find((order) => order.id === action.payload.id);
       if (order) {
         order.status = action.payload.status;

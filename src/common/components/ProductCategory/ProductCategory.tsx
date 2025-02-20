@@ -3,17 +3,10 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
 import { Product } from '@/common/types';
 
-const ProductCategoryCard = ({ product }: { product: Product }) => {
+const ProductCategoryCard: React.FC<{ product: Product }> = ({ product }) => {
   const navigate = useNavigate();
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      // minHeight="30vh"
-      // bgcolor="#f3f4f6"
-      height={'400px'}
-    >
+    <Box display="flex" justifyContent="center" alignItems="center" height={'400px'}>
       <Card
         onClick={() => navigate(`/productList/${product.gender}`)}
         sx={{ maxWidth: 345, borderRadius: 2, boxShadow: 3, cursor: 'pointer' }}

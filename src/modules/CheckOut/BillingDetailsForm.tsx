@@ -1,3 +1,4 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -24,16 +25,37 @@ const schema = yup.object().shape({
   phone: yup.string().required('Phone is required'),
 });
 
+type FormData = {
+  firstName: string;
+  lastName: string;
+  country: string;
+  address: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  phone: string;
+};
+
+const fields: Array<keyof FormData> = [
+  'firstName',
+  'lastName',
+  'country',
+  'address',
+  'city',
+  'state',
+  'postalCode',
+];
+
 const BillingDetailsForm: React.FC = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormData) => {
     console.log(data);
   };
 
@@ -44,125 +66,29 @@ const BillingDetailsForm: React.FC = () => {
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
-          <Grid item md={6} xs={12}>
-            <Controller
-              name="firstName"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="First Name*"
-                  fullWidth
-                  error={!!errors.firstName}
-                  helperText={errors.firstName ? errors.firstName.message : ''}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item md={6} xs={12}>
-            <Controller
-              name="lastName"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Last Name*"
-                  fullWidth
-                  error={!!errors.lastName}
-                  helperText={errors.lastName ? errors.lastName.message : ''}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item md={6} xs={12}>
-            <Controller
-              name="country"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Country / Region*"
-                  fullWidth
-                  error={!!errors.country}
-                  helperText={errors.country ? errors.country.message : ''}
-                />
-              )}
-            />
-          </Grid>
-          {/* <Grid item md={6} xs={12}>
-            <Controller
-              name="company"
-              control={control}
-              render={({ field }) => <TextField {...field} label="Company Name" fullWidth />}
-            />
-          </Grid> */}
-          <Grid item md={6} xs={12}>
-            <Controller
-              name="address"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Street Address*"
-                  fullWidth
-                  error={!!errors.address}
-                  helperText={errors.address ? errors.address.message : ''}
-                />
-              )}
-            />
-          </Grid>
-          {/* <Grid item md={6} xs={12}>
-            <Controller
-              name="apt"
-              control={control}
-              render={({ field }) => <TextField {...field} label="Apt, suite, unit" fullWidth />}
-            />
-          </Grid> */}
-          <Grid item md={4} xs={12}>
-            <Controller
-              name="city"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="City*"
-                  fullWidth
-                  error={!!errors.city}
-                  helperText={errors.city ? errors.city.message : ''}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item md={4} xs={12}>
-            <Controller
-              name="state"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="State*"
-                  fullWidth
-                  error={!!errors.state}
-                  helperText={errors.state ? errors.state.message : ''}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item md={4} xs={12}>
-            <Controller
-              name="postalCode"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Postal Code*"
-                  fullWidth
-                  error={!!errors.postalCode}
-                  helperText={errors.postalCode ? errors.postalCode.message : ''}
-                />
-              )}
-            />
-          </Grid>
+          {fields.map((field) => (
+            <Grid
+              item
+              md={field === 'city' || field === 'state' || field === 'postalCode' ? 4 : 6}
+              xs={12}
+              key={field}
+            >
+              <Controller
+                name={field}
+                control={control}
+                render={({ field: controllerField }) => (
+                  <TextField
+                    {...controllerField}
+                    label={`${field.charAt(0).toUpperCase() + field.slice(1)}*`}
+                    fullWidth
+                    error={!!errors[field]}
+                    helperText={errors[field]?.message || ''}
+                    aria-label={field}
+                  />
+                )}
+              />
+            </Grid>
+          ))}
           <Grid item xs={12}>
             <Controller
               name="phone"
@@ -173,10 +99,15 @@ const BillingDetailsForm: React.FC = () => {
                   defaultCountry="US"
                   placeholder="Phone"
                   className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
+                  aria-label="Phone"
                 />
               )}
             />
-            {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+            {errors.phone && (
+              <Typography color="error" variant="body2">
+                {errors.phone.message}
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel

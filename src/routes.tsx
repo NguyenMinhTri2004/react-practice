@@ -6,6 +6,7 @@ import ProductListPage from './pages/productList';
 import CartPage from './pages/cart';
 import CheckOutPage from './pages/checkOut';
 import SignInPage from './pages/signIn';
+import QuoteFormPage from './pages/quoteForm';
 
 const routes: RouteObject[] = [
   {
@@ -19,6 +20,7 @@ const routes: RouteObject[] = [
       { path: '/productList/women', element: <ProductListPage /> },
       { path: '/cart', element: <CartPage /> },
       { path: '/checkOut', element: <CheckOutPage /> },
+      { path: '/quoteform', element: <QuoteFormPage /> },
       { path: '*', element: <ErrorPage /> },
     ],
   },

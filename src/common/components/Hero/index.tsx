@@ -25,11 +25,6 @@ const HeroSection: React.FC = () => {
 
   return (
     <Box className={classes.hero}>
-      <img
-        src="https://storage.googleapis.com/a1aa/image/9NQTnbqvSDKy5SvPTtjA7Pqx3GPQvSzf4JLZdqC5NaI.jpg"
-        alt="Hero"
-        className={classes.heroImage}
-      />
       <Container>
         <Typography variant="h2" component="h1" gutterBottom>
           Summer Value Pack

@@ -21,3 +21,7 @@ export const loginWithFacebook = async () => {
     console.error(err);
   }
 };
+
+export const convertVNDToUSD = (amountVND: number, exchangeRate: number = 25000): number => {
+  return amountVND / exchangeRate;
+};

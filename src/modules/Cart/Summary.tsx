@@ -1,10 +1,10 @@
 import { Paper, Typography, Box, Button } from '@mui/material';
 
-interface SummaryProps {
+type SummaryProps = {
   subtotal: number;
   shipping: number;
   grandTotal: number;
-}
+};
 
 const Summary: React.FC<SummaryProps> = ({ subtotal, shipping, grandTotal }) => {
   return (

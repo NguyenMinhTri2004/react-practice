@@ -1,29 +1,18 @@
+import React from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import heroImage from '../../assets/images/heroImage.png';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  heroContent: {
-    backgroundColor: '#00AEEF',
-    backgroundImage:
-      'url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB7bzYu0ZTHfL_fTeyErFvxMDVv2WtJVcy1g&s)',
-    padding: theme.spacing(8, 0, 6),
-    position: 'relative',
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
-  },
-  heroImage: {
-    height: '600px',
-    width: '400px',
-  },
+const HeroContent = styled('div')(({ theme }) => ({
+  backgroundColor: '#00AEEF',
+  backgroundImage: `url(${heroImage})`,
+  padding: theme.spacing(8, 0, 6),
+  position: 'relative',
 }));
 
 const HeroSection: React.FC = () => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.heroContent}>
+    <HeroContent>
       <Container maxWidth="xl">
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box color="white">
@@ -32,26 +21,15 @@ const HeroSection: React.FC = () => {
               Summer Value Pack
             </Typography>
             <Typography variant="h6">cool / colorful / comfy</Typography>
-            <div className={classes.heroButtons}>
-              <Button variant="contained" color="primary">
+            <Box mt={4}>
+              <Button variant="contained" color="primary" aria-label="Shop Now">
                 Shop Now
               </Button>
-            </div>
+            </Box>
           </Box>
-          {/* <img
-            src="https://storage.googleapis.com/a1aa/image/bvA3RKOUHiGobUFLDC6DgPLJ9xGeJb9L5FltKwT0zXQ.jpg"
-            alt="Woman holding shopping bags"
-            className={classes.heroImage}
-          /> */}
         </Box>
       </Container>
-      {/* <IconButton className={classes.heroButtons} style={{ position: 'absolute', left: 0, top: '50%' }}>
-        &lt;
-      </IconButton>
-      <IconButton className={classes.heroButtons} style={{ position: 'absolute', right: 0, top: '50%' }}>
-        &gt;
-      </IconButton> */}
-    </div>
+    </HeroContent>
   );
 };
 

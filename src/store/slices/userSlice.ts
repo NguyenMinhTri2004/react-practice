@@ -1,12 +1,11 @@
-// userSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface UserState {
+export type UserState = {
   id: string | null;
   name: string;
   email: string;
   isAuthenticated: boolean;
-}
+};
 
 const initialState: UserState = {
   id: null,
@@ -25,6 +24,7 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.isAuthenticated = true;
     },
+
     logout: (state) => {
       state.id = null;
       state.name = '';

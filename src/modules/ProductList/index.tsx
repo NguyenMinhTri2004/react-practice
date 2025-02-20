@@ -1,35 +1,33 @@
+import React, { useEffect, useState, useMemo } from 'react';
 import { Box } from '@mui/material';
 import FilterSidebar from './FilterSidebar';
 import ProductListComponent from '@/common/components/Product/ProductList';
 import Section from '@/common/components/Section';
 import SectionBody from '@/common/components/Section/SectionBody';
 import Header from './Header';
-import { useEffect, useState } from 'react';
 import { mockProducts } from '@/assets/fakeData';
 
-const ProductList = () => {
-  const [category, setCategory] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const [priceRange, setPriceRange] = useState([10, 600]);
-  const [filteredProducts, setFilteredProducts] = useState(mockProducts);
+const ProductList: React.FC = () => {
+  const [category, setCategory] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string>('');
+  const [priceRange, setPriceRange] = useState<number[]>([10, 999999]);
+
   const path = window.location.pathname;
 
   useEffect(() => {
     const categoryFromPath = path.split('/')[2];
     setCategory(categoryFromPath);
-    console.log(categoryFromPath);
   }, [path]);
 
-  useEffect(() => {
-    const filtered = mockProducts.filter(
+  const filteredProducts = useMemo(() => {
+    return mockProducts.filter(
       (p) =>
-        (!selectedType || p.category === selectedType) && // Lọc theo loại
-        (!category || p.gender === category) && // Lọc theo danh mục
+        (!selectedType || p.category === selectedType) &&
+        (!category || p.gender === category) &&
         p.price >= priceRange[0] &&
-        p.price <= priceRange[1], // Lọc theo khoảng giá
+        p.price <= priceRange[1],
     );
-    setFilteredProducts(filtered);
-  }, [selectedType, priceRange, category]); // Cập nhật khi bất kỳ giá trị nào thay đổi
+  }, [selectedType, priceRange, category]);
 
   return (
     <Section>

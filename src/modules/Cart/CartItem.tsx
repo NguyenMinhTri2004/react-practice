@@ -3,28 +3,27 @@ import { Add, Remove, Delete } from '@mui/icons-material';
 import { useAppDispatch } from '@/store/hooks';
 import { removeFromCart } from '@/store/slices/cartSlice';
 
-
-interface CartItem {
+type CartItem = {
   id: number;
   image: string;
   name: string;
   price: number;
   quantity: number;
-}
-interface CartItemProps {
+};
+type CartItemProps = {
   product: CartItem;
-}
+};
 
 const CartItem: React.FC<CartItemProps> = ({ product }) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const handleRemove = (id: string) => {
-    dispatch(removeFromCart(id));
-  };
+  // const handleRemove = (id: number) => {
+  //   dispatch(removeFromCart(id));
+  // };
 
-  const handleUpdateQuantity = (id: string, quantity: number) => {
-    dispatch(updateQuantity({ id, quantity })); 
-  };
+  // const handleUpdateQuantity = (id: string, quantity: number) => {
+  //   dispatch(updateQuantity({ id, quantity }));
+  // };
   return (
     <Grid
       container
@@ -33,13 +32,15 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
       sx={{ borderBottom: 1, borderColor: 'grey.300', py: 2 }}
     >
       <Grid item xs={12} md={4} display="flex" alignItems="center">
-        <img src={product.image} alt={product.name} style={{ width: 60, height: 60, borderRadius: 8 }} />
+        <img
+          src={product.image}
+          alt={product.name}
+          style={{ width: 60, height: 60, borderRadius: 8 }}
+        />
         <Box ml={2}>
           <Typography variant="body1" fontWeight="bold">
             {product.name}
           </Typography>
-          {/* <Typography variant="body2" color="textSecondary">Color: {color}</Typography>
-            <Typography variant="body2" color="textSecondary">Size: {size}</Typography> */}
         </Box>
       </Grid>
       <Grid item xs={2} textAlign="center">
@@ -60,16 +61,6 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
           </IconButton>
         </Box>
       </Grid>
-      {/* <Grid item xs={2} textAlign="center">
-        <Typography variant="body2" color="textSecondary">
-          {shipping}
-        </Typography>
-      </Grid>
-      <Grid item xs={2} textAlign="center">
-        <Typography variant="body1" fontWeight="bold">
-          ${subtotal.toFixed(2)}
-        </Typography>
-      </Grid> */}
       <Grid item xs={2} textAlign="center">
         <IconButton color="secondary">
           <Delete />
@@ -80,7 +71,3 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
 };
 
 export default CartItem;
-function updateQuantity(arg0: { id: string; quantity: number; }): any {
-  throw new Error('Function not implemented.');
-}
-

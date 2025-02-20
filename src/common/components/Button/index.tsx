@@ -1,5 +1,17 @@
-const Button = () => {
-  return <div>index</div>;
+import React from 'react';
+import Button from '@mui/material/Button';
+
+type CustomButtonProps = {
+  label: string;
+  onClick: () => void;
 };
 
-export default Button;
+const CustomButton: React.FC<CustomButtonProps> = ({ label, onClick }) => {
+  return (
+    <Button variant="contained" color="primary" onClick={onClick}>
+      {label}
+    </Button>
+  );
+};
+
+export default CustomButton;

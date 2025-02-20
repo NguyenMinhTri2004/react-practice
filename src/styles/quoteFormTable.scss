@@ -1,0 +1,63 @@
+.table-container {
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+  
+    .table-title {
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: capitalize;
+      margin-bottom: 12px;
+    }
+  
+    .quote-table {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+      }
+  
+      th {
+        background-color: #f4f4f4;
+      }
+  
+      .input-field {
+        width: 80px; // Mặc định cho ô số lượng
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 14px;
+  
+        &:focus {
+          border-color: #007bff;
+          outline: none;
+        }
+      }
+  
+      .input-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+  
+        .currency {
+          font-size: 14px;
+          font-weight: bold;
+          color: #555;
+        }
+  
+        // Ô nhập giá dài hơn
+        .input-field.price {
+          width: 140px; // Điều chỉnh độ dài của ô giá
+          text-align: right; // Canh phải để nhìn rõ số
+        }
+      }
+    }
+  }
+  

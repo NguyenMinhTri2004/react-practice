@@ -1,6 +1,7 @@
+import React from 'react';
 import SignIn from '@/modules/SignIn';
 
-const SignInPage = () => {
+const SignInPage: React.FC = () => {
   return <SignIn />;
 };
 

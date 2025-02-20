@@ -1,82 +1,56 @@
 import { Box, Typography, Paper, Grid, Divider } from '@mui/material';
+import { orderItems } from '@/assets/fakeData';
 
 const OrderSummary: React.FC = () => {
+  const subtotal = orderItems.reduce((sum, product) => sum + product.price * product.quantity, 0);
+  const savings = 30.0;
+  const shipping = 5.0;
+  const total = subtotal - savings + shipping;
+
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
       <Paper elevation={3} sx={{ p: 3, width: '100%', maxWidth: 400 }}>
         <Typography variant="h5" fontWeight="bold" gutterBottom>
           Order Summary
         </Typography>
-        <Box mb={2}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
-              <img
-                src="https://storage.googleapis.com/a1aa/image/Az02pz1b0ReQSArOJ6fpoGiHwsL94y6dWywTEOnfJmk.jpg"
-                alt="Blue Flower Print Crop Top"
-                style={{ width: 60, height: 60, borderRadius: 8 }}
-              />
+        {orderItems.map((product) => (
+          <Box mb={2} key={product.id}>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item>
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  style={{ width: 60, height: 60, borderRadius: 8 }}
+                />
+              </Grid>
+              <Grid item xs>
+                <Typography fontWeight="bold">{`${product.name} × ${product.quantity}`}</Typography>
+                <Typography color="textSecondary">{`Color: ${product.color}`}</Typography>
+              </Grid>
+              <Grid item>
+                <Typography fontWeight="bold">
+                  ${(product.price * product.quantity).toFixed(2)}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs>
-              <Typography fontWeight="bold">Blue Flower Print Crop Top × 1</Typography>
-              <Typography color="textSecondary">Color: Yellow</Typography>
-            </Grid>
-            <Grid item>
-              <Typography fontWeight="bold">$29.00</Typography>
-            </Grid>
-          </Grid>
-        </Box>
-        <Box mb={2}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
-              <img
-                src="https://storage.googleapis.com/a1aa/image/X5Z6VqwimzPAUDTedUL8nl10Pl1bolNhhmz6aVVQujk.jpg"
-                alt="Lavender Hoodie"
-                style={{ width: 60, height: 60, borderRadius: 8 }}
-              />
-            </Grid>
-            <Grid item xs>
-              <Typography fontWeight="bold">Lavender Hoodie × 2</Typography>
-              <Typography color="textSecondary">Colour: Lavender</Typography>
-            </Grid>
-            <Grid item>
-              <Typography fontWeight="bold">$119.00</Typography>
-            </Grid>
-          </Grid>
-        </Box>
-        <Box mb={2}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item>
-              <img
-                src="https://storage.googleapis.com/a1aa/image/YGpIzMJt5kiZyv5e_xF2Q-BN_9ZSCmPWpSTHA1JZ-2c.jpg"
-                alt="Black Sweatshirt"
-                style={{ width: 60, height: 60, borderRadius: 8 }}
-              />
-            </Grid>
-            <Grid item xs>
-              <Typography fontWeight="bold">Black Sweatshirt × 2</Typography>
-              <Typography color="textSecondary">Color: Black</Typography>
-            </Grid>
-            <Grid item>
-              <Typography fontWeight="bold">$123.00</Typography>
-            </Grid>
-          </Grid>
-        </Box>
+          </Box>
+        ))}
         <Divider />
         <Box mt={2}>
           <Grid container justifyContent="space-between" mb={1}>
-            <Typography color="textSecondary">Subtotal (3 items)</Typography>
-            <Typography fontWeight="bold">$513.00</Typography>
+            <Typography color="textSecondary">{`Subtotal (${orderItems.length} items)`}</Typography>
+            <Typography fontWeight="bold">${subtotal.toFixed(2)}</Typography>
           </Grid>
           <Grid container justifyContent="space-between" mb={1}>
             <Typography color="textSecondary">Savings</Typography>
             <Typography fontWeight="bold" color="error">
-              - $30.00
+              - ${savings.toFixed(2)}
             </Typography>
           </Grid>
           <Grid container justifyContent="space-between" mb={1}>
             <Typography color="textSecondary">Shipping</Typography>
             <Typography fontWeight="bold" color="error">
-              - $5.00
+              - ${shipping.toFixed(2)}
             </Typography>
           </Grid>
           <Divider />
@@ -85,7 +59,7 @@ const OrderSummary: React.FC = () => {
               Total
             </Typography>
             <Typography fontWeight="bold" variant="h6">
-              $478.00
+              ${total.toFixed(2)}
             </Typography>
           </Grid>
         </Box>

@@ -1,6 +1,7 @@
+import React from 'react';
 import Checkout from '@/modules/CheckOut';
 
-const CheckOutPage = () => {
+const CheckOutPage: React.FC = () => {
   return <Checkout />;
 };
 
