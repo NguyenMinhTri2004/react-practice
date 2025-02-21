@@ -12,7 +12,9 @@ type Product = {
 
 type ProductContextType = {
   products: Product[];
-  updateProduct: (id: string, field: keyof Product, value: number) => void;
+  updateProduct: (id: string, category: Category, field: keyof Product, value: number) => void;
+  addProduct: (product: Omit<Product, 'id'>) => void;
+  removeProduct: (id: string, category: Category) => void;
   totalAmount: number;
 };
 
@@ -21,6 +23,7 @@ const ProductContext = createContext<ProductContextType | undefined>(undefined);
 export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([
     { id: '1', name: 'Product A', quantity: 2, price: 10, category: 'men' },
+    { id: '1', name: 'Product A', quantity: 2, price: 10, category: 'women' },
     { id: '2', name: 'Product B', quantity: 1, price: 15, category: 'women' },
     { id: '3', name: 'Product C', quantity: 2, price: 10, category: 'men' },
     { id: '4', name: 'Product D', quantity: 1, price: 15, category: 'women' },
@@ -30,9 +33,35 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
     { id: '8', name: 'Product H', quantity: 1, price: 15, category: 'women' },
   ]);
 
-  const updateProduct = useCallback((id: string, field: keyof Product, value: number) => {
+  const updateProduct = useCallback(
+    (id: string, category: Category, field: keyof Product, value: number) => {
+      setProducts((prevProducts) =>
+        prevProducts.map((product) => {
+          if (product.id === id && field === 'price') {
+            return { ...product, price: value };
+          }
+
+          if (product.id === id && product.category === category && field === 'quantity') {
+            return { ...product, quantity: value };
+          }
+
+          return product;
+        }),
+      );
+    },
+    [],
+  );
+
+  const addProduct = useCallback((product: Omit<Product, 'id'>) => {
+    setProducts((prevProducts) => [
+      ...prevProducts,
+      { id: (prevProducts.length + 1).toString(), ...product },
+    ]);
+  }, []);
+
+  const removeProduct = useCallback((id: string, category: Category) => {
     setProducts((prevProducts) =>
-      prevProducts.map((product) => (product.id === id ? { ...product, [field]: value } : product)),
+      prevProducts.filter((product) => !(product.id === id && product.category === category)),
     );
   }, []);
 
@@ -41,7 +70,9 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
   }, [products]);
 
   return (
-    <ProductContext.Provider value={{ products, updateProduct, totalAmount }}>
+    <ProductContext.Provider
+      value={{ products, updateProduct, totalAmount, removeProduct, addProduct }}
+    >
       {children}
     </ProductContext.Provider>
   );

@@ -9,7 +9,8 @@ import { store } from './store/index';
 import './styles/main.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '../src/i18n';
-import { CurrencyProvider } from "@/context/CurrencyContext";
+import { CurrencyProvider } from '@/context/CurrencyContext';
+import { ThemeProviderCustom } from './context/ThemeContext';
 
 const theme = createTheme();
 
@@ -18,16 +19,18 @@ const rootElement = document.getElementById('root');
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <CurrencyProvider>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Provider store={store}>
-            <App />
-            <ToastContainer />
-          </Provider>
-        </BrowserRouter>
-      </ThemeProvider>
-      </CurrencyProvider>
+      <ThemeProviderCustom>
+        <CurrencyProvider>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <Provider store={store}>
+                <App />
+                <ToastContainer />
+              </Provider>
+            </BrowserRouter>
+          </ThemeProvider>
+        </CurrencyProvider>
+      </ThemeProviderCustom>
     </React.StrictMode>,
   );
 } else {

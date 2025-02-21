@@ -23,11 +23,7 @@ const QuoteFormContent = () => {
         <QuoteFormTable category="women" />
 
         <QuoteFormTotal />
-        <PDFDownloadButton
-          products={products}
-          totalAmount={totalAmount}
-          // totalAmountVND={totalAmountVND}
-        />
+        <PDFDownloadButton products={products} totalAmount={totalAmount} />
       </Container>
     </ProductProvider>
   );

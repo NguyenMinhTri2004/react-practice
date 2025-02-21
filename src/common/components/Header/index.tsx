@@ -14,6 +14,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAppSelector } from '@/store/hooks';
 import { useTranslation } from 'react-i18next';
 import { useCurrency } from '@/context/CurrencyContext';
+import { useTheme } from '@/context/ThemeContext';
+import { Brightness4, Brightness7 } from '@mui/icons-material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,6 +61,7 @@ const Header: React.FC = () => {
   const { i18n } = useTranslation();
   const { t }: { t: (key: string) => string } = useTranslation();
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const changeLanguage = (lng: string) => {
     i18n
@@ -151,6 +154,9 @@ const Header: React.FC = () => {
           <Button variant="contained" color="primary" onClick={toggleCurrency}>
             Chuyển sang {currency === 'USD' ? 'VND' : 'USD'}
           </Button>
+          <IconButton onClick={toggleTheme} color="inherit">
+            {theme === 'light' ? <Brightness4 /> : <Brightness7 />}
+          </IconButton>
         </Stack>
       </div>
     </AppBar>

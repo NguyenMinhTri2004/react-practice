@@ -2,21 +2,22 @@ import React, { useMemo } from 'react';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, Font } from '@react-pdf/renderer';
 import { Button, CircularProgress } from '@mui/material';
 import RobotoFont from '../../assets/fonts/roboto.ttf';
+import { useCurrency } from '@/context/CurrencyContext';
 
 type Category = 'men' | 'women';
 
 type Product = {
   id: string;
   name: string;
-  category: Category;
   quantity: number;
-  priceUSD: number;
-  priceVND: number;
+  price: number;
+  category: Category;
 };
 
 type QuoteFormPDFProps = {
   products: Product[];
   totalAmount: number;
+  currency: 'USD' | 'VND';
 };
 
 Font.register({
@@ -30,11 +31,11 @@ const styles = StyleSheet.create({
   title: { fontSize: 16, fontWeight: 'bold', marginBottom: 10 },
   table: { width: '100%', borderCollapse: 'collapse' },
   row: { flexDirection: 'row', borderBottom: '1px solid #ddd', padding: 5 },
-  cell: { width: '16%', textAlign: 'center', fontSize: 10 },
+  cell: { width: '20%', textAlign: 'center', fontSize: 10 },
   total: { marginTop: 15, fontSize: 14, textAlign: 'right', fontWeight: 'bold' },
 });
 
-export const QuoteFormPDF: React.FC<QuoteFormPDFProps> = ({ products, totalAmount }) => {
+export const QuoteFormPDF: React.FC<QuoteFormPDFProps> = ({ products, totalAmount, currency }) => {
   const menProducts = products.filter((p) => p.category === 'men');
   const womenProducts = products.filter((p) => p.category === 'women');
 
@@ -48,21 +49,19 @@ export const QuoteFormPDF: React.FC<QuoteFormPDFProps> = ({ products, totalAmoun
               <Text style={styles.cell}>Mã SP</Text>
               <Text style={styles.cell}>Tên</Text>
               <Text style={styles.cell}>SL</Text>
-              <Text style={styles.cell}>Giá (USD)</Text>
-              <Text style={styles.cell}>Giá (VND)</Text>
-              <Text style={styles.cell}>Thành tiền (USD)</Text>
-              <Text style={styles.cell}>Thành tiền (VND)</Text>
+              <Text style={styles.cell}>Giá ({currency})</Text>
+              <Text style={styles.cell}>Thành tiền ({currency})</Text>
             </View>
             {menProducts.map((product) => (
               <View key={product.id} style={styles.row}>
                 <Text style={styles.cell}>{product.id}</Text>
                 <Text style={styles.cell}>{product.name}</Text>
                 <Text style={styles.cell}>{product.quantity}</Text>
-                <Text style={styles.cell}>${product.priceUSD.toFixed(2)}</Text>
-                <Text style={styles.cell}>{product.priceVND.toLocaleString()} VND</Text>
-                <Text style={styles.cell}>${(product.quantity * product.priceUSD).toFixed(2)}</Text>
                 <Text style={styles.cell}>
-                  {(product.quantity * product.priceVND).toLocaleString()} VND
+                  {product.price.toLocaleString()} {currency}
+                </Text>
+                <Text style={styles.cell}>
+                  {(product.quantity * product.price).toLocaleString()} {currency}
                 </Text>
               </View>
             ))}
@@ -76,29 +75,28 @@ export const QuoteFormPDF: React.FC<QuoteFormPDFProps> = ({ products, totalAmoun
               <Text style={styles.cell}>Mã SP</Text>
               <Text style={styles.cell}>Tên</Text>
               <Text style={styles.cell}>SL</Text>
-              <Text style={styles.cell}>Giá (USD)</Text>
-              <Text style={styles.cell}>Giá (VND)</Text>
-              <Text style={styles.cell}>Thành tiền (USD)</Text>
-              <Text style={styles.cell}>Thành tiền (VND)</Text>
+              <Text style={styles.cell}>Giá ({currency})</Text>
+              <Text style={styles.cell}>Thành tiền ({currency})</Text>
             </View>
             {womenProducts.map((product) => (
               <View key={product.id} style={styles.row}>
                 <Text style={styles.cell}>{product.id}</Text>
                 <Text style={styles.cell}>{product.name}</Text>
                 <Text style={styles.cell}>{product.quantity}</Text>
-                <Text style={styles.cell}>${product.priceUSD.toFixed(2)}</Text>
-                <Text style={styles.cell}>{product.priceVND.toLocaleString()} VND</Text>
-                <Text style={styles.cell}>${(product.quantity * product.priceUSD).toFixed(2)}</Text>
                 <Text style={styles.cell}>
-                  {(product.quantity * product.priceVND).toLocaleString()} VND
+                  {product.price.toLocaleString()} {currency}
+                </Text>
+                <Text style={styles.cell}>
+                  {(product.quantity * product.price).toLocaleString()} {currency}
                 </Text>
               </View>
             ))}
           </View>
         </View>
-        <Text style={styles.total}>Tổng tiền</Text>
-        <Text style={styles.total}>USD: ${totalAmount.toFixed(2)}</Text>
-        {/* <Text style={styles.total}>VND: {totalAmountVND.toLocaleString()} VND</Text> */}
+
+        <Text style={styles.total}>
+          Tổng tiền ({currency}): {totalAmount.toLocaleString()} {currency}
+        </Text>
       </Page>
     </Document>
   );
@@ -107,12 +105,15 @@ export const QuoteFormPDF: React.FC<QuoteFormPDFProps> = ({ products, totalAmoun
 type PDFDownloadButtonProps = {
   products: Product[];
   totalAmount: number;
-  totalAmountVND: number;
 };
 
 const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({ products, totalAmount }) => {
+  const { currency } = useCurrency();
+
+  console.log('Current from download button', currency);
+
   const document = useMemo(
-    () => <QuoteFormPDF products={products} totalAmount={totalAmount} />,
+    () => <QuoteFormPDF products={products} totalAmount={totalAmount} currency={currency} />,
     [products, totalAmount],
   );
 
@@ -132,7 +133,7 @@ const PDFDownloadButton: React.FC<PDFDownloadButtonProps> = ({ products, totalAm
             textTransform: 'none',
             fontSize: 14,
             fontWeight: 600,
-            padding: '8px  16px',
+            padding: '8px 16px',
             margin: '5px 0px',
           }}
         >
