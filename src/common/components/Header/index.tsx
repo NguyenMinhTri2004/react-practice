@@ -77,6 +77,7 @@ const Header: React.FC = () => {
     { path: '/productList/men', label: t('menu.men') },
     { path: '/productList/women', label: t('menu.women') },
     { path: '/quoteform', label: t('menu.quoteForm') },
+    { path: '/twojs', label: t('menu.twojs') },
   ];
 
   const [selectedPath, setSelectedPath] = useState<string | null>(location.pathname);

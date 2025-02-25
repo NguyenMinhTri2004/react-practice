@@ -7,6 +7,7 @@ import CartPage from './pages/cart';
 import CheckOutPage from './pages/checkOut';
 import SignInPage from './pages/signIn';
 import QuoteFormPage from './pages/quoteForm';
+import TwoJsPage from './pages/twoJs';
 
 const routes: RouteObject[] = [
   {
@@ -21,6 +22,7 @@ const routes: RouteObject[] = [
       { path: '/cart', element: <CartPage /> },
       { path: '/checkOut', element: <CheckOutPage /> },
       { path: '/quoteform', element: <QuoteFormPage /> },
+      { path: 'twojs', element: <TwoJsPage /> },
       { path: '*', element: <ErrorPage /> },
     ],
   },
